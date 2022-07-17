@@ -22,6 +22,7 @@ class OmniDateTimePicker extends StatefulWidget {
 
   final bool? is24HourMode;
   final bool? isShowSeconds;
+  final bool showMinutesAndHours;
 
   final Color? primaryColor;
   final Color? backgroundColor;
@@ -49,6 +50,7 @@ class OmniDateTimePicker extends StatefulWidget {
     this.timeSpinnerTextStyle,
     this.timeSpinnerHighlightedTextStyle,
     this.borderRadius,
+    this.showMinutesAndHours = false,
   }) : super(key: key);
 
   @override
@@ -124,35 +126,38 @@ class _OmniDateTimePickerState extends State<OmniDateTimePicker>
                         );
                       },
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 16.0),
-                      child: TimePickerSpinner(
-                        is24HourMode: widget.is24HourMode ?? false,
-                        isShowSeconds: widget.isShowSeconds ?? false,
-                        normalTextStyle: widget.timeSpinnerTextStyle ??
-                            TextStyle(
-                                fontSize: 18,
-                                color:
-                                    widget.calendarTextColor ?? Colors.black54),
-                        highlightedTextStyle: widget
-                                .timeSpinnerHighlightedTextStyle ??
-                            TextStyle(
-                                fontSize: 24,
-                                color:
-                                    widget.calendarTextColor ?? Colors.black),
-                        time: startDateTime,
-                        onTimeChange: (dateTime) {
-                          DateTime tempStartDateTime = DateTime(
-                            startDateTime.year,
-                            startDateTime.month,
-                            startDateTime.day,
-                            dateTime.hour,
-                            dateTime.minute,
-                            dateTime.second,
-                          );
+                    Visibility(
+                      visible: widget.showMinutesAndHours,
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 16.0),
+                        child: TimePickerSpinner(
+                          is24HourMode: widget.is24HourMode ?? false,
+                          isShowSeconds: widget.isShowSeconds ?? false,
+                          normalTextStyle: widget.timeSpinnerTextStyle ??
+                              TextStyle(
+                                  fontSize: 18,
+                                  color: widget.calendarTextColor ??
+                                      Colors.black54),
+                          highlightedTextStyle: widget
+                                  .timeSpinnerHighlightedTextStyle ??
+                              TextStyle(
+                                  fontSize: 24,
+                                  color:
+                                      widget.calendarTextColor ?? Colors.black),
+                          time: startDateTime,
+                          onTimeChange: (dateTime) {
+                            DateTime tempStartDateTime = DateTime(
+                              startDateTime.year,
+                              startDateTime.month,
+                              startDateTime.day,
+                              dateTime.hour,
+                              dateTime.minute,
+                              dateTime.second,
+                            );
 
-                          startDateTime = tempStartDateTime;
-                        },
+                            startDateTime = tempStartDateTime;
+                          },
+                        ),
                       ),
                     ),
                   ],
